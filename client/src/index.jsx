@@ -20,17 +20,18 @@ class App extends React.Component {
       method: 'POST',
       data: {username: term},
       dataType: 'json',
-      success: function (data){
+      success: (data) => {
         console.log('data', data);
+        console.log('data', typeof data);        
+        this.setState({
+          repos: data
+        });
         console.log('POST success');
       },
       error: function (err) {
         console.log(err);
       }
     })
-
-    //write to db
-    
   }
 
   render () {

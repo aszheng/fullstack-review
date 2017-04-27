@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var GitHub = require('github-api');
 var mongoose = require('mongoose');
 var Repo = require('../database/index');
-// mongoose.connect('mongodb://localhost/fetcher');
+var db = mongoose.connection;
 
 
 var app = express();
@@ -27,20 +27,20 @@ app.post('/repos/import', function (req, res) {
     for (var i=0; i<data.length; i++){
       var userRepos = new Repo({
         name: data[i].name,
-        description: data[i].description
+        description: data[i].description,
+        created_at: data[i].created_at,
+        url: data[i].html_url
       });
-      console.log(data.name);
-      console.log(data.description);
+
       userRepos.save(function (err, result){
-        console.log('results', result);
+        // console.log('results', result);
       })
     }
-    res.json(data.length);
   });
 
-
-
-
+  Repo.find(function (err, result) {
+    res.json(result);
+  });
 
   console.log('POST REQ SUCESS!!!!')
 });

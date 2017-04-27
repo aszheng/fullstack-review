@@ -9,7 +9,8 @@ app.post('/repos/import', function (req, res) {
 });
 
 app.get('/repos', function (req, res) {
-  // TODO
+  console.log('GET REQUEST');
+  res.end('TESTTESTTEST');
 });
 
 var port = 1128;

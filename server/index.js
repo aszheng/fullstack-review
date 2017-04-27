@@ -1,5 +1,8 @@
 var express = require('express');
 var bodyParser = require('body-parser');
+var GitHub = require('github-api');
+
+
 
 var app = express();
 app.use(express.static(__dirname + '/../client/dist'));
@@ -8,13 +11,20 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.post('/repos/import', function (req, res) {
+  var searchUser = req.body.username;
   
-  // console.log('REQ' ,req);
-  console.log('REQ BODY' ,req.body);
-  console.log('REQ BODY stringify' ,JSON.stringify(req.body));
-  console.log('POST REQ SUCESS!!!!')
+  var gh = new GitHub({
+    username: 'aszheng',
+    password: 'd75e14dd734a456197ece8f88a6daa4a88f5601c'
+  });
 
-  res.json(req.body);
+  var user = gh.getUser(searchUser); // no user specified defaults to the user for whom credentials were provided
+  user.listRepos(function(err, notifications) {
+    console.log('notifications', notifications.length);
+    res.json(notifications.length);
+  });
+
+  console.log('POST REQ SUCESS!!!!')
 });
 
 app.get('/repos', function (req, res) {

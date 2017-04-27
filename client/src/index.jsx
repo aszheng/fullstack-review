@@ -18,7 +18,7 @@ class App extends React.Component {
     $.ajax({
       url: 'http://localhost:1128/repos/import',
       method: 'POST',
-      data: term,
+      data: {username: term},
       dataType: 'json',
       success: function (data){
         console.log('data', data);

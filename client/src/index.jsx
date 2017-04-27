@@ -22,13 +22,15 @@ class App extends React.Component {
       dataType: 'json',
       success: function (data){
         console.log('data', data);
-        console.log('term', term);
         console.log('POST success');
       },
       error: function (err) {
         console.log(err);
       }
     })
+
+    //write to db
+    
   }
 
   render () {

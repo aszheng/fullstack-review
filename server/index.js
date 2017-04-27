@@ -1,7 +1,9 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var GitHub = require('github-api');
-
+var mongoose = require('mongoose');
+var Repo = require('../database/index');
+// mongoose.connect('mongodb://localhost/fetcher');
 
 
 var app = express();
@@ -19,10 +21,26 @@ app.post('/repos/import', function (req, res) {
   });
 
   var user = gh.getUser(searchUser); // no user specified defaults to the user for whom credentials were provided
-  user.listRepos(function(err, notifications) {
-    console.log('notifications', notifications.length);
-    res.json(notifications.length);
+  user.listRepos(function(err, data) {
+
+    //write to DB  
+    for (var i=0; i<data.length; i++){
+      var userRepos = new Repo({
+        name: data[i].name,
+        description: data[i].description
+      });
+      console.log(data.name);
+      console.log(data.description);
+      userRepos.save(function (err, result){
+        console.log('results', result);
+      })
+    }
+    res.json(data.length);
   });
+
+
+
+
 
   console.log('POST REQ SUCESS!!!!')
 });

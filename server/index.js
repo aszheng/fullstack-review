@@ -3,7 +3,7 @@ var bodyParser = require('body-parser');
 var GitHub = require('github-api');
 var mongoose = require('mongoose');
 var Repo = require('../database/index');
-var db = mongoose.connection;
+// var db = mongoose.connection;
 
 
 var app = express();
@@ -21,20 +21,21 @@ app.post('/repos/import', function (req, res) {
   });
 
   var user = gh.getUser(searchUser); // no user specified defaults to the user for whom credentials were provided
+
   user.listRepos(function(err, data) {
 
     //write to DB  
     for (var i=0; i<data.length; i++){
       var userRepos = new Repo({
-        name: data[i].name,
+        id: Number(data[i].id),
+        owner: data[i].owner.login,
+        name: JSON.stringify(data[i].name),
         description: data[i].description,
         created_at: data[i].created_at,
         url: data[i].html_url
       });
 
-      userRepos.save(function (err, result){
-        // console.log('results', result);
-      })
+      userRepos.save(function (err, result){})
     }
   });
 
@@ -43,11 +44,19 @@ app.post('/repos/import', function (req, res) {
   });
 
   console.log('POST REQ SUCESS!!!!')
+  // res.redirect('http://localhost:1128/repos');
 });
 
 app.get('/repos', function (req, res) {
-  console.log('GET REQUEST WORKS');
-  res.end('TESTTESTTEST');
+  Repo.
+    find().
+    limit(25).
+    sort({ created_at: -1 }).
+    exec(function (err,result){
+      res.json(result);
+    });
+  
+  console.log('GET REQ SUCESS!!!!')
 });
 
 var port = 1128;

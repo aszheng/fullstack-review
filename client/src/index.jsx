@@ -10,7 +10,31 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-  this.search = this.search.bind(this);
+    this.search = this.search.bind(this);
+    this.fetch = this.fetch.bind(this);
+  }
+
+  componentDidMount() {
+    this.fetch();
+  }
+
+  fetch() {
+    $.ajax({
+      url: 'http://localhost:1128/repos/',
+      method: 'GET',
+      dataType: 'json',
+      success: (data) => {
+        console.log('GET data', data);
+
+        this.setState({
+          repos: data
+        });
+        console.log('GET success');
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    })
   }
 
   search (term) {
@@ -22,7 +46,6 @@ class App extends React.Component {
       dataType: 'json',
       success: (data) => {
         console.log('data', data);
-        console.log('data', typeof data);        
         this.setState({
           repos: data
         });
@@ -32,13 +55,33 @@ class App extends React.Component {
         console.log(err);
       }
     })
+
+    this.fetch();
+  }
+
+  clear () {
+    $.ajax({
+      url: 'http://localhost:1128/clear',
+      method: 'POST',
+      success: (data) => {
+        console.log('data', data);
+        this.setState({
+          repos: []
+        });
+        console.log('CLEAR POST success');
+      },
+      error: function (err) {
+        console.log(err);
+      }
+    })    
   }
 
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
-      <RepoList repos={this.state.repos}/>
       <Search onSearch={this.search}/>
+      <RepoList repos={this.state.repos}/>
+      <ClearDb onClick={this.clear}/>
     </div>)
   }
 }

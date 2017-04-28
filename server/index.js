@@ -37,14 +37,18 @@ app.post('/repos/import', function (req, res) {
 
       userRepos.save(function (err, result){})
     }
-  });
+  })
+  .then( sdfsdfsd => {
 
-  Repo.find(function (err, result) {
-    res.json(result);
-  });
+    Repo.find({}, function (err, result) {
+      console.log('result inside POST REPO FIND', result);
+      res.json(result);        
+    })
+  
+  })
+
 
   console.log('POST REQ SUCESS!!!!')
-  // res.redirect('http://localhost:1128/repos');
 });
 
 app.get('/repos', function (req, res) {

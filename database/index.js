@@ -4,11 +4,11 @@ mongoose.connect('mongodb://localhost/fetcher');
 
 var repoSchema = mongoose.Schema({
   id: {
-    type: Number, unqiue: true
+    type: Number, unique: true, dropDups: true
   },
   owner: String,
   name: {
-    type: String, unqiue: true
+    type: String
   },
   description: String,
   created_at: String,

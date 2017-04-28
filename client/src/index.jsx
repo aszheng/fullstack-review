@@ -46,18 +46,18 @@ class App extends React.Component {
       data: {username: term},
       dataType: 'json',
       success: (data) => {
-        console.log('data', data);
+        console.log('INSIDE POST AJAX SUCESS - data', data);
         this.setState({
           repos: data
         });
-        console.log('POST success');
+        console.log('POST success IN SEARCH POST AJAX');
       },
       error: function (err) {
         console.log(err);
       }
     })
+        this.fetch();
 
-    this.fetch();
   }
 
   clear () {

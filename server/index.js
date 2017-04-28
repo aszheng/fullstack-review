@@ -24,7 +24,8 @@ app.post('/repos/import', function (req, res) {
 
   user.listRepos(function(err, data) {
 
-    //write to DB  
+    //this is happening AFTER Repo.findd - since listRepos is a API call
+    //can take forever to come back   
     for (var i=0; i<data.length; i++){
       var userRepos = new Repo({
         id: Number(data[i].id),
@@ -40,10 +41,14 @@ app.post('/repos/import', function (req, res) {
   })
   .then( sdfsdfsd => {
 
-    Repo.find({}, function (err, result) {
-      console.log('result inside POST REPO FIND', result);
-      res.json(result);        
-    })
+  Repo.
+    find().
+    limit(25).
+    sort({ created_at: -1 }).
+    exec(function (err,result){
+      console.log('result!!!!!!', result);
+      res.json(result);
+    });
   
   })
 

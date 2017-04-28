@@ -50,13 +50,13 @@ class App extends React.Component {
         this.setState({
           repos: data
         });
+        this.fetch();
         console.log('POST success IN SEARCH POST AJAX');
       },
       error: function (err) {
         console.log(err);
       }
     })
-        this.fetch();
 
   }
 

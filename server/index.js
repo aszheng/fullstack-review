@@ -59,6 +59,14 @@ app.get('/repos', function (req, res) {
   console.log('GET REQ SUCESS!!!!')
 });
 
+app.post('/clear', function (req, res) {
+  mongoose.connect('mongodb://localhost/fetcher',function(){
+      mongoose.connection.db.dropDatabase();
+  });
+  res.end();
+  console.log('tabledropped')
+});
+
 var port = 1128;
 
 app.listen(port, function() {

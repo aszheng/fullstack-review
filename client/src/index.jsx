@@ -11,6 +11,7 @@ class App extends React.Component {
       repos: []
     }
     this.search = this.search.bind(this);
+    this.clear = this.clear.bind(this);    
     this.fetch = this.fetch.bind(this);
   }
 
@@ -79,9 +80,8 @@ class App extends React.Component {
   render () {
     return (<div>
       <h1>Github Fetcher</h1>
-      <Search onSearch={this.search}/>
+      <Search onSearch={this.search} onClear={this.clear}/>
       <RepoList repos={this.state.repos}/>
-      <ClearDb onClick={this.clear}/>
     </div>)
   }
 }
